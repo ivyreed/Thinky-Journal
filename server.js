@@ -2,6 +2,10 @@ const express = require("express");
 // Run npm install mongodb and require mongodb and MongoClient class
 const { MongoClient } = require("mongodb");
 
+const { User, Thought, Reaction } = require("./models");
+// const { Thought } = require("./models");
+// const { Reaction } = require("./models");
+
 const app = express();
 const PORT = process.env.PORT || 3001;
 
@@ -35,6 +39,58 @@ client
 
 // Built in Express function that parses incoming requests to JSON
 app.use(express.json());
+
+
+
+
+app.get("/all-users", async (req, res) => {
+  try {
+    // Using model in route
+    const result = await User.find({});
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(500).send({ message: "Internal Server Error, USER GET ROUTE" });
+  }
+});
+
+
+
+
+app.get("/all-thoughts", async (req, res) => {
+  try {
+    // Using model in route
+    const result = await Thought.find({});
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(500).send({ message: "Internal Server Error, THOUGHT GET ROUTE" });
+  }
+});
+
+
+
+app.get("/all-reactions", async (req, res) => {
+  try {
+    // Using model in route
+    const result = await Reaction.find({});
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(500).send({ message: "Internal Server Error, REACTIONS GET ROUTE" });
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 app.post("/create", (req, res) => {
   // Use db connection to add a document

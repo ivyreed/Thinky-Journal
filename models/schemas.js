@@ -4,15 +4,15 @@ const mongoose = require("mongoose");
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true, trim: true},
   email: { type: String, required: true, unique: true, valid},
-  thoughts: {'Array of _id values referencing the Thought mode'},
-  friends: {'Array of _id values referencing the User model (self-reference)'}
+  // thoughts: {'Array of _id values referencing the Thought mode'},
+  // friends: {'Array of _id values referencing the User model (self-reference)'}
 });
 
 const thoughtSchema = new mongoose.Schema({
   thoughtText: { type: String, required: true, minLength: 1, maxLength: 280},
-  createdAt: { 'Date, Set default value to the current timestamp, Use a getter method to format the timestamp on query'},
+  createdAt: { type: Date, default: Date.now },
   username: {type: String, required: true},
-  reactions:{'Array of nested documents created with the reactionSchema'}
+  // reactions:{'Array of nested documents created with the reactionSchema'}
 
 });
 
@@ -23,22 +23,37 @@ const reactionSchema = new mongoose.Schema({
   createdAt:{ type: Date, default: Date.now }
 
 });
-// Using mongoose.model() to compile a model based on the schema
-// 'Item' is the name of the model
-// grocerySchema is the name of the schema we are using to create a new instance of the model
-const Item = mongoose.model("Item", grocerySchema);
+
+const User = mongoose.model('User', userSchema);
+const Thought = mongoose.model('Thought', thoughtSchema);
+const Reaction = mongoose.model('Reaction', reactionSchema);
 
 // Error handler function to be called when an error occurs when trying to save a document
 const handleError = (err) => console.error(err);
 
 // We use the model to create individual documents that have the properties as defined in our schema
-Item.create({
-  item: "banana",
-  stockCount: 10,
-  price: 1,
-  inStock: true,
+User.create({
+  username: "Ivy",
+  email: "yeet@yeet.com",
+
+})
+User.create({
+  username: "Andrew",
+  email: "feet@feet.com",
+
+})
+
+Thought.create({
+  thoughtText: "howdy, world",
+  username: "Ivy",
+});
+
+Reaction.create({
+  reactionID: "reaction01",
+  reactionBody:"say hello"
+  username: "Andrew",
 })
   .then((result) => console.log("Created new document", result))
   .catch((err) => handleError(err));
 
-module.exports = Item;
+module.exports = User, Thought, Reaction;
