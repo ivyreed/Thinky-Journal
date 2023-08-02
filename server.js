@@ -3,7 +3,7 @@ const express = require("express");
 const { MongoClient } = require("mongodb");
 
 const app = express();
-const port = 3333;
+const PORT = process.env.PORT || 3001;
 
 // Connection string to local instance of MongoDB
 const connectionStringURI = `mongodb://127.0.0.1:27017`;
@@ -39,7 +39,7 @@ app.use(express.json());
 app.post("/create", (req, res) => {
   // Use db connection to add a document
   db.collection("HumanStorage")
-    .insertOne({ name: req.body.name, email: req.body.email })
+    .insertOne({ name: req.body.name, email: req.body.email, thoughts: req.body.thoughts })
     .then((results) => res.json(results))
     .catch((err) => {
       if (err) throw err;
@@ -60,21 +60,28 @@ app.get("/read", (req, res) => {
 // To delete a document, we need to convert the string id in body to an ObjectId
 app.delete("/delete", (req, res) => {
   // Wrap the id in the ObjectId class to instantiate a new instance
-  const bookId = new ObjectId(req.body.id);
+  const humanId = new ObjectId(req.body.id);
 
   // Use deleteOne() to delete one object
-  db.collection("bookCollection")
+  db.collection("HumanCollection")
     .deleteOne(
       // This is the filter. We delete only the document that matches the _id provided in the request body.
-      { _id: bookId }
+      { _id: humanId }
     )
     .then((results) => {
       console.log(results);
       res.send(
-        results.deletedCount ? "Document deleted" : "No document found!"
+        results.deletedCount ? "Thou parcel hath been returned to the fire from which it came" : "I say! No parcel hath been discovered!"
       );
     })
     .catch((err) => {
       if (err) throw err;
     });
+});
+
+
+db.once("open", () => {
+  app.listen(PORT, () => {
+    console.log(`API server running on port ${PORT}!`);
+  });
 });
