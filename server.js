@@ -1,143 +1,137 @@
 const express = require("express");
-// Run npm install mongodb and require mongodb and MongoClient class
-const { MongoClient } = require("mongodb");
 
-const { User, Thought, Reaction } = require("./models");
+
+const connection = require("./config/connection.js")
+
+// const { User, Thought, Reaction } = require("./models");
 // const { Thought } = require("./models");
 // const { Reaction } = require("./models");
 
 const app = express();
 const PORT = process.env.PORT || 3001;
-
-// Connection string to local instance of MongoDB
-const connectionStringURI = `mongodb://127.0.0.1:27017`;
-
-// Initialize a new instance of MongoClient
-const client = new MongoClient(connectionStringURI);
-
-// Declare a variable to hold the connection
-let db;
-
-// Create variable to hold our database name
-const dbName = "thinkyjournalDB";
-
-client
-  .connect()
-  .then(() => {
-    console.log("Connected successfully to MongoDB");
-    // Use client.db() constructor to add new db instance
-    db = client.db(dbName);
-
-    // start up express server
-    app.listen(port, () => {
-      console.log(`Example app listening at http://localhost:${port}`);
-    });
-  })
-  .catch((err) => {
-    console.error("Mongo connection error: ", err.message);
-  });
-
-// Built in Express function that parses incoming requests to JSON
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(require("./routes"));
 
+// const { MongoClient } = require("mongodb");
+// const connectionStringURI = `mongodb://127.0.0.1:27017`;
+// const client = new MongoClient(connectionStringURI);
 
+// let db;
 
+const dbName = "thinkyjournalDB";
+// async function connectDB() {
+//   try {
 
-app.get("/all-users", async (req, res) => {
-  try {
-    // Using model in route
-    const result = await User.find({});
-    res.status(200).json(result);
-  } catch (err) {
-    res.status(500).send({ message: "Internal Server Error, USER GET ROUTE" });
-  }
-});
+// client
+//     .connect()
+//     .then(() => {
+//       console.log("Connected successfully to MongoDB");
+//       db = client.db(dbName);
+//       app.listen(PORT, () => {
+//         console.log(`Example app listening at http://localhost:${PORT}`);
+//       });
+//     })
+//     .catch((err) => {
+//       console.error("Mongo connection error: ", err.message);
+//     });
+  //   } catch (error) {
+  //     console.error("try connection error: ", error);
+  //   }
+  // }
+  // connectDB();
 
+  //     from assignment 7
+  //   async function seedDBAndStartServer() {
+  //     try {
+  //       await client.connect();
+  //       console.log("Connected successfully to MongoDB");
+  //       db = client.db(dbName);
+  //       // Drops any documents, if they exist
+  //       await db.collection("groceryList").deleteMany({});
+  //       // Adds data to database
+  //       const res = await db.collection("groceryList").insertMany(data);
+  //       console.log(res);
 
+  //       app.listen(port, () => {
+  //         console.log(`Example app listening at http://localhost:${port}`);
+  //       });
+  //     } catch (err) {
+  //       console.error("Mongo connection error: ", err.message);
+  //     }
+  //   }
+  //   seedDBAndStartServer();
+  // Built in Express function that parses incoming requests to JSON
 
+  // app.get("/all-users", async (req, res) => {
+  //   try {
+  //     // Using model in route
+  //     const result = await User.find({});
+  //     res.status(200).json(result);
+  //   } catch (err) {
+  //     res.status(500).send({ message: "Internal Server Error, USER GET ROUTE" });
+  //   }
+  // });
 
-app.get("/all-thoughts", async (req, res) => {
-  try {
-    // Using model in route
-    const result = await Thought.find({});
-    res.status(200).json(result);
-  } catch (err) {
-    res.status(500).send({ message: "Internal Server Error, THOUGHT GET ROUTE" });
-  }
-});
+  // app.get("/all-thoughts", async (req, res) => {
+  //   try {
+  //     // Using model in route
+  //     const result = await Thought.find({});
+  //     res.status(200).json(result);
+  //   } catch (err) {
+  //     res.status(500).send({ message: "Internal Server Error, THOUGHT GET ROUTE" });
+  //   }
+  // });
 
+  // app.get("/all-reactions", async (req, res) => {
+  //   try {
+  //     // Using model in route
+  //     const result = await Reaction.find({});
+  //     res.status(200).json(result);
+  //   } catch (err) {
+  //     res.status(500).send({ message: "Internal Server Error, REACTIONS GET ROUTE" });
+  //   }
+  // });
 
+  // app.post("/create", (req, res) => {
+  //   db.collection("userStorage")
+  //     .insertOne({ name: req.body.name, email: req.body.email, thoughts: req.body.thoughts })
+  //     .then((results) => res.json(results))
+  //     .catch((err) => {
+  //       if (err) throw err;
+  //     });
+  // });
 
-app.get("/all-reactions", async (req, res) => {
-  try {
-    // Using model in route
-    const result = await Reaction.find({});
-    res.status(200).json(result);
-  } catch (err) {
-    res.status(500).send({ message: "Internal Server Error, REACTIONS GET ROUTE" });
-  }
-});
+  // app.get("/read", (req, res) => {
+  //   db.collection("userStorage")
+  //     .find()
+  //     .toArray()
+  //     .then((results) => res.json(results))
+  //     .catch((err) => {
+  //       if (err) throw err;
+  //     });
+  // });
 
+  // app.delete("/delete", (req, res) => {
+  //   const humanId = new ObjectId(req.body.id);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-app.post("/create", (req, res) => {
-  // Use db connection to add a document
-  db.collection("HumanStorage")
-    .insertOne({ name: req.body.name, email: req.body.email, thoughts: req.body.thoughts })
-    .then((results) => res.json(results))
-    .catch((err) => {
-      if (err) throw err;
+  //   db.collection("userCollection")
+  //     .deleteOne(
+  //       { _id: humanId }
+  //     )
+  //     .then((results) => {
+  //       console.log(results);
+  //       res.send(
+  //         results.deletedCount ? "Thou parcel hath been returned to the fire from which it came" : "I say! No parcel hath been discovered!"
+  //       );
+  //     })
+  //     .catch((err) => {
+  //       if (err) throw err;
+  //     });
+  // });
+// console.log(db)
+  connection.once("open", () => {
+    app.listen(PORT, () => {
+      console.log(`API server running on port ${PORT}!`);
     });
-});
-
-app.get("/read", (req, res) => {
-  // Use db connection to find all documents in collection
-  db.collection("HumanStorage")
-    .find()
-    .toArray()
-    .then((results) => res.json(results))
-    .catch((err) => {
-      if (err) throw err;
-    });
-});
-
-// To delete a document, we need to convert the string id in body to an ObjectId
-app.delete("/delete", (req, res) => {
-  // Wrap the id in the ObjectId class to instantiate a new instance
-  const humanId = new ObjectId(req.body.id);
-
-  // Use deleteOne() to delete one object
-  db.collection("HumanCollection")
-    .deleteOne(
-      // This is the filter. We delete only the document that matches the _id provided in the request body.
-      { _id: humanId }
-    )
-    .then((results) => {
-      console.log(results);
-      res.send(
-        results.deletedCount ? "Thou parcel hath been returned to the fire from which it came" : "I say! No parcel hath been discovered!"
-      );
-    })
-    .catch((err) => {
-      if (err) throw err;
-    });
-});
-
-
-db.once("open", () => {
-  app.listen(PORT, () => {
-    console.log(`API server running on port ${PORT}!`);
   });
-});
