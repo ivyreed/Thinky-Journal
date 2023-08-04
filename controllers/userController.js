@@ -39,34 +39,33 @@ const userController = {
       res.status(500).json(err);
     }
   },
-  // Delete a student and remove them from the course
-  //   deleteStudent(req, res) {
-  //     try {
-  //       const student = await Student.findOneAndRemove({
-  //         _id: req.params.studentId,
-  //       });
+    // deleteUser(req, res) {
+    //   try {
+    //     const users = await User.findOneAndRemove({
+    //       _id: req.params.studentId,
+    //     });
 
-  //       if (!student) {
-  //         return res.status(404).json({ message: "No such student exists" });
-  //       }
+    //     if (!users) {
+    //       return res.status(404).json({ message: "No such student exists" });
+    //     }
 
-  //       const course = await Course.findOneAndUpdate(
-  //         { students: req.params.studentId },
-  //         { $pull: { students: req.params.studentId } },
-  //         { new: true }
-  //       );
+        // const course = await Course.findOneAndUpdate(
+        //   { students: req.params.studentId },
+        //   { $pull: { students: req.params.studentId } },
+        //   { new: true }
+        // );
 
-  //       if (!course) {
-  //         return res.status(404).json({
-  //           message: "Student deleted, but no courses found",
-  //         });
-  //       }
+    //     if (!course) {
+    //       return res.status(404).json({
+    //         message: "Student deleted, but no courses found",
+    //       });
+    //     }
 
-  //       res.json({ message: "Student successfully deleted" });
-  //     } catch (err) {
-  //       console.log(err);
-  //       res.status(500).json(err);
-  //     }
-  //   }
+    //     res.json({ message: "Student successfully deleted" });
+    //   } catch (err) {
+    //     console.log(err);
+    //     res.status(500).json(err);
+    //   }
+    // }
 };
 module.exports = userController;

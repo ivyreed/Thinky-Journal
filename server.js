@@ -20,6 +20,12 @@ app.use(require("./routes"));
 // let db;
 
 const dbName = "thinkyjournalDB";
+  connection.once("open", () => {
+    app.listen(PORT, () => {
+      console.log(`API server running on port ${PORT}!`);
+    });
+  });
+
 // async function connectDB() {
 //   try {
 
@@ -130,8 +136,3 @@ const dbName = "thinkyjournalDB";
   //     });
   // });
 // console.log(db)
-  connection.once("open", () => {
-    app.listen(PORT, () => {
-      console.log(`API server running on port ${PORT}!`);
-    });
-  });
