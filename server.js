@@ -1,11 +1,5 @@
 const express = require("express");
-
-
-const connection = require("./config/connection.js")
-
-// const { User, Thought, Reaction } = require("./models");
-// const { Thought } = require("./models");
-// const { Reaction } = require("./models");
+const connection = require("./config/connection.js");
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -19,7 +13,6 @@ app.use(require("./routes"));
 
 // let db;
 
-const dbName = "thinkyjournalDB";
   connection.once("open", () => {
     app.listen(PORT, () => {
       console.log(`API server running on port ${PORT}!`);
@@ -28,8 +21,8 @@ const dbName = "thinkyjournalDB";
 
 // async function connectDB() {
 //   try {
-
-// client
+// 
+// await client
 //     .connect()
 //     .then(() => {
 //       console.log("Connected successfully to MongoDB");
@@ -41,11 +34,11 @@ const dbName = "thinkyjournalDB";
 //     .catch((err) => {
 //       console.error("Mongo connection error: ", err.message);
 //     });
-  //   } catch (error) {
-  //     console.error("try connection error: ", error);
-  //   }
-  // }
-  // connectDB();
+//     } catch (error) {
+//       console.error("try connection error: ", error);
+//     }
+//   }
+//   connectDB();
 
   //     from assignment 7
   //   async function seedDBAndStartServer() {

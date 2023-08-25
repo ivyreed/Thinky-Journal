@@ -5,7 +5,7 @@ const reactionSchema = new Schema({
     type: Schema.Types.ObjectId,
     default: () => new Types.ObjectId(),
   },
-  reactionBody: { type: String, required: true, unique: true },
+  reactionBody: { type: String, required: true},
   username: { type: String, required: true },
   createdAt: { type: Date, default: Date.now },
 });
@@ -14,4 +14,4 @@ const reactionSchema = new Schema({
 
 
 module.exports = reactionSchema;
-module.exports = Reaction;
+// module.exports = Reaction;
