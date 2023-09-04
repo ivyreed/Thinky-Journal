@@ -10,7 +10,7 @@ const userController = {
       return res.status(500).json(err);
     }
   },
-  // Get a single student
+
   async getSingleUser(req, res) {
     try {
       const user = await User.findOne({
@@ -31,7 +31,7 @@ const userController = {
       return res.status(500).json(err);
     }
   },
-  // create a new student
+
   async createUser(req, res) {
     try {
       const user = await User.create(req.body);
@@ -42,43 +42,41 @@ const userController = {
   },
   async deleteUser(req, res) {
     try {
-      const updatedUser = await User.deleteOne({ _id: req.params.userId });
-      if (!updatedUser) {
-        res.json({ msg: "user not found" });
+      const user = await User.findOneAndDelete({
+        _id: req.params.userId,
+      })
+        .populate("thoughts")
+        .populate("friends");
+
+      if (!user) {
+        return res.status(404).json({ message: "failed single user route" });
       }
-      await Thought.deleteMany({ _id: { $in: updatedUser.thoughts } });
-      res.json(updatedUser);
-    } catch (error) {
-      res.json({ msg: "failed delete user route" });
+
+      res.json({
+        user,
+      });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json(err);
     }
   },
-  // deleteUser(req, res) {
-  //   try {
-  //     const users = await User.findOneAndRemove({
-  //       _id: req.params.studentId,
-  //     });
 
-  //     if (!users) {
-  //       return res.status(404).json({ message: "No such student exists" });
-  //     }
+  async updateUser(req, res) {
+    try {
+      const userData = await User.findOneAndUpdate(
+        { _id: req.params.id },
+        { $set: req.body },
+      );
 
-  // const course = await Course.findOneAndUpdate(
-  //   { students: req.params.studentId },
-  //   { $pull: { students: req.params.studentId } },
-  //   { new: true }
-  // );
+      if (!userData) {
+        res.status(404).json({ message: "No user with this id!" });
+        return;
+      }
 
-  //     if (!course) {
-  //       return res.status(404).json({
-  //         message: "Student deleted, but no courses found",
-  //       });
-  //     }
-
-  //     res.json({ message: "Student successfully deleted" });
-  //   } catch (err) {
-  //     console.log(err);
-  //     res.status(500).json(err);
-  //   }
-  // }
+      res.json(userData);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  },
 };
 module.exports = userController;

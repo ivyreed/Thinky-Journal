@@ -2,7 +2,7 @@ const express = require("express");
 const connection = require("./config/connection.js");
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3401;
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(require("./routes"));
