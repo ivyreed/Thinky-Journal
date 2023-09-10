@@ -30,8 +30,7 @@ This is using mongodb to store data and have relationships between different sto
 
 ## Video
 
-
-
+https://www.youtube.com/watch?v=tZwipYHlqY0&ab_channel=IvyMarie
 ## Run Locally
 
 Simply clone the repository, open up the application on Vs Code, type node server.js in the terminal, then go to insomnia and make your CRUD requests!
